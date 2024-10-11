@@ -1,0 +1,30 @@
+[package]
+name = "jare-transfer-hook"
+version = "0.1.0"
+description = "Created with Anchor"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "jare_transfer_hook"
+
+[features]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+cpi = ["no-entrypoint"]
+default = []
+
+
+[dependencies]
+anchor-lang = { version="0.29.0" }
+anchor-spl = {  version="0.29.0" }
+spl-transfer-hook-interface = "^0.3.0"
+spl-tlv-account-resolution = "^0.3.0"
+num-integer = "0.1.46"
+
+uint = { git = "https://github.com/raydium-io/parity-common", package = "uint" }
+spl-token = {version="3.0.0", features=["no-entrypoint"]}
+bytemuck = "1.18.0"
+spl-token-2022 = "^0.9.0"
+raydium-amm-v3 = { path = "../../raydium-clmm/programs/amm/", features = ["cpi"]}
