@@ -5,7 +5,6 @@ use anchor_lang::{
 };
 use raydium_amm_v3::{cpi::accounts::{DecreaseLiquidity, IncreaseLiquidity}, libraries::{get_delta_amounts_signed, get_liquidity_from_single_amount_0, get_sqrt_price_at_tick, Q64, U256}, program::AmmV3, states::{PersonalPositionState, PoolState, TickArrayState}};
 use core as core_;
-use raydium_amm_v3::states::LazyPersonalPositionState;
 pub const TICK_ARRAY_SEED: &str = "tick_array";
 pub const TICK_ARRAY_SIZE_USIZE: usize = 60;
 pub const TICK_ARRAY_SIZE: i32 = 60;
@@ -39,7 +38,7 @@ fn handle_existing_liquidity(
     }
 
     // Load personal position data
-    let personal_position = ctx.accounts.personal_position.load()?;
+    let personal_position = &ctx.accounts.personal_position;
     let (liquidity, tick_lower, tick_upper, owed_0, owed_1) = (
         personal_position.liquidity,
         personal_position.tick_lower_index,
@@ -801,7 +800,7 @@ pub struct TransferHook<'info> {
     #[account(mut)]
     pub protocol_position: AccountInfo<'info>,
     #[account(mut)]
-    pub personal_position: LazyAccount<'info, PersonalPositionState>,
+    pub personal_position: Box<Account<'info, PersonalPositionState>>,
     #[account(mut)]
     pub token_account0: Box<InterfaceAccount<'info, TokenAccount>>,
     #[account(mut)]
